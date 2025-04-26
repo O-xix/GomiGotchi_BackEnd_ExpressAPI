@@ -1,90 +1,89 @@
-import LittersDAO from "../dao/usersDAO.js";
+import LitterDAO from "../dao/litterDAO.js";
 
-export default class LittersController {
-    static async apiGetUser(req, res, next) {
+export default class LitterController {
+    static async apiPostLitter(req, res, next) {
         try {
-            let id = req.params.id || {};
-            let user = await LittersDAO.getUserById(id);
-            if (!user) {
-                res.status(404).json({ error: "User not found" });
-                return;
-            }
-            res.json(user);
-        } catch (e) {
-            console.log(`api, ${e}`);
-            res.status(500).json({ error: e.message });
-        }
-    }
+            const { before_image_path, caption, latitude, longitude, after_image_path, status, pick_up_time } = req.body;
 
-    static async apiGetUserByUsername(req, res, next) {
-        try {
-            const { username } = req.params; // Extract username from the request parameters
-            const user = await LittersDAO.getUserByUsername(username); // Query the database by username
-
-            if (!user) {
-                res.status(404).json({ error: "User not found" });
-                return;
-            }
-
-            res.json(user); // Return the user data
-        } catch (e) {
-            console.log(`api, ${e}`);
-            res.status(500).json({ error: e.message });
-        }
-    }
-
-    static async apiPostUser(req, res, next) {
-        try {
-            const { email_address, username, password, gg_fullness } = req.body;
-
-            console.log(req.body);
-
-            const userResponse = await LittersDAO.addUser(
-                email_address,
-                username,
-                password,
-                gg_fullness
-            );
-            res.json({ status: "success" });
-        } catch (e) {
-            res.status(500).json({ error: e.message });
-        }
-    }
-
-    static async apiUpdateUser(req, res, next) {
-        try {
-            const userId = req.params.id;
-            const { email_address, username, password, gg_fullness } = req.body;
-
-            const userResponse = await LittersDAO.updateUser(
-                userId,
-                email_address,
-                username,
-                password,
-                gg_fullness
+            const litterResponse = await LitterDAO.addLitter(
+                before_image_path,
+                caption,
+                latitude,
+                longitude,
+                after_image_path,
+                status,
+                pick_up_time
             );
 
-            var { error } = userResponse;
-            if (error) {
-                res.status(400).json({ error });
-            }
-
-            if (userResponse.modifiedCount === 0) {
-                throw new Error("Unable to update user - user may not exist");
-            }
-
-            res.json({ status: "success" });
+            res.json({ status: "success", litterId: litterResponse.insertedId });
         } catch (e) {
+            console.error(`api, ${e}`);
             res.status(500).json({ error: e.message });
         }
     }
 
-    static async apiDeleteUser(req, res, next) {
+    static async apiGetLitterById(req, res, next) {
         try {
-            const userId = req.params.id;
-            const userResponse = await LittersDAO.deleteUser(userId);
+            const litterId = req.params.id;
+            const litter = await LitterDAO.getLitterById(litterId);
+
+            if (!litter) {
+                res.status(404).json({ error: "Litter not found" });
+                return;
+            }
+
+            res.json(litter);
+        } catch (e) {
+            console.error(`api, ${e}`);
+            res.status(500).json({ error: e.message });
+        }
+    }
+
+    static async apiGetAllLitters(req, res, next) {
+        try {
+            const litters = await LitterDAO.getAllLitters();
+            res.json(litters);
+        } catch (e) {
+            console.error(`api, ${e}`);
+            res.status(500).json({ error: e.message });
+        }
+    }
+
+    static async apiUpdateLitter(req, res, next) {
+        try {
+            const litterId = req.params.id;
+            const { before_image_path, caption, latitude, longitude, after_image_path, status, pick_up_time } = req.body;
+
+            const updateResponse = await LitterDAO.updateLitter(
+                litterId,
+                before_image_path,
+                caption,
+                latitude,
+                longitude,
+                after_image_path,
+                status,
+                pick_up_time
+            );
+
+            if (updateResponse.modifiedCount === 0) {
+                throw new Error("Unable to update Litter - Litter may not exist");
+            }
+
             res.json({ status: "success" });
         } catch (e) {
+            console.error(`api, ${e}`);
+            res.status(500).json({ error: e.message });
+        }
+    }
+
+    static async apiDeleteLitter(req, res, next) {
+        try {
+            const litterId = req.params.id;
+            const deleteResponse = await LitterDAO.deleteLitter(litterId);
+
+            res.json({ status: "success" });
+        } catch (e) {
+            console.error(`api, ${e}`);
             res.status(500).json({ error: e.message });
         }
     }
