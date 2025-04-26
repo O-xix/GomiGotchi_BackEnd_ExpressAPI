@@ -1,5 +1,5 @@
 import express from 'express';
-import LitterCtrl from './litter.controller.js'; // Corrected path
+import LittersController from './litter.controller.js'; // Corrected path
 
 const router = express.Router();
 

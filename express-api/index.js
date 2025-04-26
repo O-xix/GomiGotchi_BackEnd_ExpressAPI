@@ -1,6 +1,7 @@
 import app from './server.js';
 import dotenv from "dotenv";
 //import LitterDAO from "./dao/litterDAO.js";
+import UsersDAO from "./dao/usersDAO.js";
 import { MongoClient } from "mongodb";
 
 dotenv.config();
@@ -25,6 +26,7 @@ MongoClient.connect(uri, {
 .then(async client => {
     console.log("Connected to MongoDB");
     //await LitterDAO.injectDB(client);
+    await UsersDAO.injectDB(client);
     app.listen(port, () => {
         console.log(`listening on port ${port} , localhost:${port}`);
     });

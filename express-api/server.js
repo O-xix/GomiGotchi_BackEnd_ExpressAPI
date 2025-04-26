@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import litter from "./api/litter.route.js"; // Corrected path
+//import litter from "./api/litter.route.js"; // Corrected path
 import users from "./api/users.route.js"; // Corrected path
 
 
@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 //routes
-app.use("/api/v1/litter", litter); // Corrected path
+//app.use("/api/v1/litter", litter); // Corrected path
 app.use("/api/v1/users", users); // Corrected path
 
 //default route

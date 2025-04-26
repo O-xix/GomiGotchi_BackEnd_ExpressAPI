@@ -1,10 +1,10 @@
-import UsersDAO from "../dao/usersDAO.js";
+import LittersDAO from "../dao/usersDAO.js";
 
-export default class UsersController {
+export default class LittersController {
     static async apiGetUser(req, res, next) {
         try {
             let id = req.params.id || {};
-            let user = await UsersDAO.getUserById(id);
+            let user = await LittersDAO.getUserById(id);
             if (!user) {
                 res.status(404).json({ error: "User not found" });
                 return;
@@ -19,7 +19,7 @@ export default class UsersController {
     static async apiGetUserByUsername(req, res, next) {
         try {
             const { username } = req.params; // Extract username from the request parameters
-            const user = await UsersDAO.getUserByUsername(username); // Query the database by username
+            const user = await LittersDAO.getUserByUsername(username); // Query the database by username
 
             if (!user) {
                 res.status(404).json({ error: "User not found" });
@@ -39,7 +39,7 @@ export default class UsersController {
 
             console.log(req.body);
 
-            const userResponse = await UsersDAO.addUser(
+            const userResponse = await LittersDAO.addUser(
                 email_address,
                 username,
                 password,
@@ -56,7 +56,7 @@ export default class UsersController {
             const userId = req.params.id;
             const { email_address, username, password, gg_fullness } = req.body;
 
-            const userResponse = await UsersDAO.updateUser(
+            const userResponse = await LittersDAO.updateUser(
                 userId,
                 email_address,
                 username,
@@ -82,7 +82,7 @@ export default class UsersController {
     static async apiDeleteUser(req, res, next) {
         try {
             const userId = req.params.id;
-            const userResponse = await UsersDAO.deleteUser(userId);
+            const userResponse = await LittersDAO.deleteUser(userId);
             res.json({ status: "success" });
         } catch (e) {
             res.status(500).json({ error: e.message });
