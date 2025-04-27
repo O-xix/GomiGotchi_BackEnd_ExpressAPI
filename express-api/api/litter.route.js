@@ -1,17 +1,23 @@
-import express from 'express';
-import LittersController from './litter.controller.js'; // Corrected path
+import express from "express";
+import multer from "multer";
+import LittersController from "./litter.controller.js";
 
 const router = express.Router();
 
-router.route('/').get((req, res) => {
-  res.send('Litter route is working!');
+// Configure multer for file uploads
+const storage = multer.memoryStorage(); // Store files in memory as Buffer
+const upload = multer({ storage: storage });
+
+router.route("/").get((req, res) => {
+  res.send("Litter route is working!");
 });
-router.route('/litter').get(LittersController.apiGetAllLitters); // Corrected path
-router.route('/litter/:id').get(LittersController.apiGetLitterById); // Corrected path
-router.route('/new').post(LittersController.apiPostLitter); // Corrected path
-router.route('/:id')
-    .put(LittersController.apiUpdateLitter) // Corrected path
-    .delete(LittersController.apiDeleteLitter); // Corrected path
+router.route("/litter").get(LittersController.apiGetAllLitters);
+router.route("/litter/:id").get(LittersController.apiGetLitterById);
+router.route("/new").post(upload.single("before_image"), LittersController.apiPostLitter); // Handle file upload
+router
+  .route("/:id")
+  .put(LittersController.apiUpdateLitter)
+  .delete(LittersController.apiDeleteLitter);
 
 export default router;
 
