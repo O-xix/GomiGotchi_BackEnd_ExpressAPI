@@ -16,21 +16,16 @@ export default class LitterDAO {
         }
     }
 
-    static async addLitter(before_image_path, caption, latitude, longitude, after_image_path, status, pick_up_time) {
+    static async addLitter(before_image, caption, latitude, longitude, status, pick_up_time) {
         try {
-            // Read images as binary data
-            const before_image = fs.readFileSync(before_image_path);
-            const after_image = fs.readFileSync(after_image_path);
-
             const litterDoc = {
                 before_image: before_image, // Binary data
                 caption: caption,
                 latitude: latitude,
                 longitude: longitude,
-                after_image: after_image, // Binary data
                 status: status,
                 created_time: new Date(), // Automatically set the creation time
-                pick_up_time: pick_up_time ? new Date(pick_up_time) : null, // Optional pick-up time
+                pick_up_time: pick_up_time, // Optional pick-up time
             };
 
             return await litter.insertOne(litterDoc);

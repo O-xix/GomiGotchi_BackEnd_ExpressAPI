@@ -3,16 +3,16 @@ import LitterDAO from "../dao/litterDAO.js";
 export default class LitterController {
     static async apiPostLitter(req, res, next) {
         try {
-            const { before_image_path, caption, latitude, longitude, after_image_path, status, pick_up_time } = req.body;
+            const before_image = req.file.buffer; // Get the uploaded file as a Buffer
+            const { caption, latitude, longitude, status, pick_up_time } = req.body;
 
             const litterResponse = await LitterDAO.addLitter(
-                before_image_path,
+                before_image,
                 caption,
-                latitude,
-                longitude,
-                after_image_path,
+                parseFloat(latitude),
+                parseFloat(longitude),
                 status,
-                pick_up_time
+                pick_up_time ? new Date(pick_up_time) : null
             );
 
             res.json({ status: "success", litterId: litterResponse.insertedId });

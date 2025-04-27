@@ -76,4 +76,5 @@ export default class UsersDAO {
 
 }
 
-// curl -X POST http://localhost:8000/api/v1/users/new -H "Content-Type: application/json" -d '{"email_address": "manager@100lifelabs.com", "username": "manager", "password": "100percentlifelabs", "gg_fullness": "100"}'
+// curl -X GET http://localhost:8000/api/v1/litter/litter -H "Content-Type: application/json"
+// curl -X GET http://localhost:8000/api/v1/user/user/manager -H "Content-Type: application/json"
