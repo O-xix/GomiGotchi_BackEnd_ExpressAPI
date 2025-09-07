@@ -27,4 +27,4 @@ The backend provides a secure **REST API** and database layer for the GomiGotchi
 
 ## 📌 Note
 This repo contains the **backend prototype only**. The project was built collaboratively in a 5-person team during a 36-hour hackathon, and is not production-ready.  
-
+Backend can be found at https://github.com/O-xix/GomiGotchi_FrontEnd.
